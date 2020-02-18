@@ -13,7 +13,8 @@ body {
 
 header {
   text-align: center;
-  height: 50px;
+  height: 60px;
+
 }
 
 .game-page {
@@ -35,10 +36,14 @@ aside {
   font-weight: 100;
 }
 
+aside:first-of-type(p) {
+  margin-top: 10%;
+}
+
 main {
-  border: 1px solid black;
   height: 100%;
   width: 100%;
+  background-color: lightgrey;
 }
 
 .hidden {
@@ -50,4 +55,14 @@ main {
   width:100px;
   text-align: center;
   margin-top: 40px;
+}
+
+.mini-card {
+  background-color: grey;
+  height: 15px;
+  width: 60px;
+}
+
+.scores:first-of-type(p){
+  margin-top: 10%;
 }
