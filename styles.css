@@ -1,0 +1,53 @@
+html, body {
+  height: 100%;
+  margin:0;
+
+}
+
+body {
+  font-family: Arial, sans-serif;
+  color: black;
+  margin: 0;
+
+}
+
+header {
+  text-align: center;
+  height: 50px;
+}
+
+.game-page {
+  display: flex;
+  flex-direction: row;
+  height: calc(100% - 50px);
+  width: 100%;
+}
+
+aside {
+  color: white;
+  background-color: black;
+  height: 100%;
+  margin-bottom:0;
+  width: 22%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: 100;
+}
+
+main {
+  border: 1px solid black;
+  height: 100%;
+  width: 100%;
+}
+
+.hidden {
+  display: none;
+}
+
+.matches {
+  text-transform: uppercase;
+  width:100px;
+  text-align: center;
+  margin-top: 40px;
+}
