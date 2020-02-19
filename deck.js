@@ -15,7 +15,6 @@ class Deck {
   }
 
   moveToMatched() {
-    // copy the id of the selected cards into the matchedCards array
+    // copy the selected cards into the matchedCards array
   }
-
 }
