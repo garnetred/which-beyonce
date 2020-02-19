@@ -1,14 +1,14 @@
 var cardView = document.querySelector(".card-view");
 var deck = new Deck();
 
-function createDeck() {
+function createCards() {
   for (var i = 0; i < 5; i++) {
     deck.cards.push(new Card(i));
     deck.cards.push(new Card(i));
   }
 }
 
-function makeCards() {
+function addCardsToHTML() {
   for (var i = 0; i < deck.cards.length; i++) {
     var newCard = `
     <div class="individ-card" id="${i}">
