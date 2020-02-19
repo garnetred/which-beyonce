@@ -33,9 +33,15 @@ aside {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   font-weight: 100;
+  text-align: center;
 }
 
+aside h2 {
+  font-size: 5rem;
+  margin: 20px 0;
+}
 
 main {
   height: 100%;
@@ -120,15 +126,27 @@ main {
 
 .matches {
   text-transform: uppercase;
-  width:100px;
+  width: 100px;
   text-align: center;
-  margin-top: 40px;
+  margin: 40px auto 0;
+}
+
+.matched-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .mini-card {
   background-color: grey;
-  height: 15px;
-  width: 60px;
+  height: 70px;
+  width: 50px;
+  margin: 10px;
+}
+
+.scores {
+  margin-bottom: 30px;
+  text-transform: uppercase;
 }
 
 .scores:first-of-type(p){
