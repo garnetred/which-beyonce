@@ -22,14 +22,14 @@ function addCardsToHTML() {
   }
 }
 
-createDeck();
+createCards();
 deck.shuffle();
-makeCards();
+addCardsToHTML();
 
 document.addEventListener('click', function(event) {
   if (event.target.classList.contains("individ-card")) {
     var cardJustClicked = event.target.id;
     deck.selectedCards.push(deck.cards[cardJustClicked]);
-    console.log(deck.selectedCards); 
+    console.log(deck.selectedCards);
   }
 });
