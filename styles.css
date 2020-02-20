@@ -1,24 +1,24 @@
 html, body {
   height: 100%;
   margin:0;
-
 }
 
 body {
-  font-family: Arial, sans-serif;
   color: black;
+  font-family: Arial, sans-serif;
   margin: 0;
-
 }
 
 header {
-  height: 60px;
-  display: flex;
   align-items: center;
+  display: flex;
+  height: 60px;
   justify-content: center;
   text-transform: uppercase;
 }
 
+
+/*entire main page besides header*/
 .game-page {
   display: flex;
   flex-direction: row;
@@ -28,17 +28,17 @@ header {
 
 /*section containing all of the sidebar information*/
 aside {
-  color: white;
+  align-items: center;
   background-color: black;
-  height: 100%;
-  margin-bottom:0;
-  width: 22%;
+  color: white;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
   font-weight: 100;
+  height: 100%;
+  justify-content: space-between;
+  margin-bottom:0;
   text-align: center;
+  width: 22%;
 }
 
 aside h2 {
@@ -47,9 +47,9 @@ aside h2 {
 }
 
 main {
+  background-color: lightgrey;
   height: 100%;
   width: 100%;
-  background-color: lightgrey;
 }
 
 /* section containing cards during gameplay */
@@ -57,17 +57,14 @@ main {
   display: grid;
   grid-template-columns: repeat(5, 220px);
   grid-template-rows: 317px 275px;
-  padding-top: 2%;
   padding-left: 5%;
+  padding-top: 2%;
   perspective: 600px;
 }
 
 /* class defining layout of each individual card used in gameplay */
 .individ-card {
   border: 4px solid black;
-  /* background-color: white; */
-  height: 100px;
-  display: inline-block;
   width: 150px;
   height: 220px;
   margin: 0 40px;
@@ -96,9 +93,10 @@ main {
 
 .individ-card:hover .card-front {
   background-color: black;
-  color: white;
   border: 4px solid white;
+  color: white;
 }
+
 /* .individ-card:nth-child(1) {
   transform: rotate(25deg);
 }
@@ -138,26 +136,22 @@ main {
   transform: rotate(60deg);
 } */
 
-.individ-card * {
-  pointer-events: none;
-}
-
 .is-flipped {
   transform: rotateY(180deg);
 }
 
 .cardface {
-  position: absolute;
   backface-visibility: hidden;
-  width: 100%;
   height: 100%;
+  position: absolute;
+  width: 100%;
 }
 
 .card-front {
-  display: flex;
-  justify-content: center;
   align-items: center;
   background-color: white;
+  display: flex;
+  justify-content: center;
 }
 
 /* .card-front:hover {
@@ -165,18 +159,19 @@ main {
 } */
 
 .card-back {
-  transform: rotateY(180deg);
   background-color: transparent;
+  transform: rotateY(180deg);
 }
 
-
+/*paragraph detailing number of matches*/
 .matches {
+  margin: 40px auto 0;
+  text-align: center;
   text-transform: uppercase;
   width: 100px;
-  text-align: center;
-  margin: 40px auto 0;
 }
 
+/*section for all of the matches cards in sidebar*/
 .matched-cards {
   display: flex;
   flex-wrap: wrap;
@@ -186,8 +181,8 @@ main {
 .mini-card {
   background-color: grey;
   height: 70px;
-  width: 50px;
   margin: 10px;
+  width: 50px;
 }
 
 .scores {
@@ -195,22 +190,17 @@ main {
   text-transform: uppercase;
 }
 
-.scores:first-of-type(p){
-  margin-top: 10%;
-}
-
 .congratulations-page {
   background-image: url(assets/bey-background-option.jpg);
-  /* opacity: 10%; */
-  height: 100%;
-  width: 100%;
   background-repeat: no-repeat;
   background-size: 100%;
   display: grid;
   grid-template-columns: repeat(1, 660px);
   grid-template-rows: 200px 100px 100px 150px;
+  height: 100%;
   justify-content: center;
   text-align: center;
+  width: 100%;
 }
 
 .congrats {
@@ -221,18 +211,18 @@ main {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin:100px;
+  margin-top: 10%;
   width: 100%;
 }
 
 button {
   background-color: black;
-  color: white;
-  width: 60%;
-  height: 50px;
-  font-size: 20px;
   border-style: none;
+  color: white;
+  font-size: 20px;
+  height: 50px;
   margin: 0 30px;
+  width: 60%;
 }
 
 h3 {
@@ -251,7 +241,7 @@ h2 {
 }
 
 img {
-  width: 100%;
   height: 100%;
   object-fit: cover;
+  width: 100%;
 }

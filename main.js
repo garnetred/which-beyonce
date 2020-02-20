@@ -30,10 +30,7 @@ addCardsToHTML();
 
 document.addEventListener('click', function(event) {
   if (event.target.classList.contains("individ-card")) {
-    event.target.classList.toggle('selected');
     deck.selectCards(event);
-    // var cardJustClicked = event.target.id;
-    // deck.selectedCards.push(deck.cards[cardJustClicked]);
     event.target.classList.toggle('is-flipped');
   }
 });
