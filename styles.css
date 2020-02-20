@@ -57,12 +57,13 @@ main {
   grid-template-rows: 317px 275px;
   padding-top: 2%;
   padding-left: 5%;
+  perspective: 600px;
 }
 
 /* class defining layout of each individual card used in gameplay */
 .individ-card {
   border: 4px solid black;
-  background-color: white;
+  /* background-color: white; */
   height: 100px;
   display: inline-block;
   width: 150px;
@@ -78,13 +79,25 @@ main {
   align-self: center;
   justify-self: center;
   align-content: space-between;
+  position: relative;
+  transition: transform 1s;
+  transform-style: preserve-3d;
 }
 
 .individ-card * {
   pointer-events: none;
 }
 
-.individ-card:nth-child(1) {
+.individ-card:hover {
+  cursor: pointer;
+}
+
+.individ-card:hover .card-front {
+  background-color: black;
+  color: white;
+  border: 4px solid white;
+}
+/* .individ-card:nth-child(1) {
   transform: rotate(25deg);
 }
 
@@ -121,13 +134,39 @@ main {
 
 .individ-card:nth-child(10) {
   transform: rotate(60deg);
+} */
+
+.individ-card * {
+  pointer-events: none;
 }
-.individ-card:hover {
-  background-color: black;
-  color: white;
-  border: 4px solid white;
-  cursor: pointer;
+
+.is-flipped {
+  transform: rotateY(180deg);
 }
+
+.cardface {
+  position: absolute;
+  backface-visibility: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+.card-front {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+}
+
+/* .card-front:hover {
+
+} */
+
+.card-back {
+  transform: rotateY(180deg);
+  background-color: transparent;
+}
+
 
 .matches {
   text-transform: uppercase;
