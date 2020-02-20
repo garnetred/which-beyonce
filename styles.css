@@ -240,6 +240,10 @@ h2 {
   display: none;
 }
 
+.disappeared {
+  visibility: hidden;
+}
+
 img {
   height: 100%;
   object-fit: cover;
