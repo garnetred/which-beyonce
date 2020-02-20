@@ -12,10 +12,28 @@ class Deck {
   checkSelectedCards() {
     // check if selectedcards[0] is equal to selectedcards[1]
     // if true then move to matched array using the movetomatched function
+    // if (this.selectedCards.length ===1) {
+    //   console.log("not enough cards!")
+    //   return;
+    // }
+      if (this.selectedCards.length===2) {
+       if(this.selectedCards[0].matchInfo ===
+        this.selectedCards[1].matchInfo) {
+          console.log("it's a match!");
+        this.moveToMatched();
+      } else {
+        unmatchedCards();
+        this.selectedCards = [];
+      }
+    }
   }
 
   moveToMatched() {
     // copy the selected cards into the matchedCards array
+    matchedCards();
+    this.matchedCards.push(this.selectedCards[0]);
+    this.matchedCards.push(this.selectedCards[1]);
+    this.selectedCards = [];
   }
 
   selectCards(event) {
@@ -26,6 +44,7 @@ class Deck {
 
   if (index===-1) {
     this.selectedCards.push(card);
+    this.checkSelectedCards();
   } else {
     this.selectedCards.splice(index, 1);
   }
