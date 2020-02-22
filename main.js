@@ -2,6 +2,8 @@ var cardView = document.querySelector(".card-view");
 var deck = new Deck();
 // boolean that controls whether or not we can click cards
 var canSelect = true;
+var gameTimer;
+var secondsPassed = 0;
 
 function createCards() {
   for (var i = 0; i < 5; i++) {
@@ -28,9 +30,13 @@ function addCardsToHTML() {
 
 function matchedCards() {
   for (var i = 0; i < deck.selectedCards.length; i++){
-    var id = deck.cards.indexOf(deck.selectedCards[i])
+    var id = deck.cards.indexOf(deck.selectedCards[i]);
     document.getElementById(`${id}`).classList.add('match');
     document.getElementById(`${id}`).classList.add('disappeared');
+    console.log(deck.matchedCards.length);
+    if (deck.matchedCards.length === 10) {
+      finishGame();
+    }
   }
   // this.selectedCards[0].classList.add('match');
   // this.selectedCards[1].classList.add('match');
@@ -51,9 +57,41 @@ function unmatchedCards() {
 //   document.getElementById(`${id}`).classList.toggle('is-flipped');
 // }
 
-createCards();
-deck.shuffle();
-addCardsToHTML();
+function startTimer() {
+  secondsPassed = 0;
+  gameTimer = setInterval(function() {
+    secondsPassed++;
+  }, 1000);
+}
+
+function startGame() {
+  cardView.innerHTML = "";
+  deck = new Deck();
+  createCards();
+  deck.shuffle();
+  addCardsToHTML();
+  startTimer();
+  document.querySelector(".game-page").classList.remove("hidden");
+  document.querySelector(".congratulations-page").classList.add("hidden");
+}
+
+function finishGame() {
+  document.querySelector(".game-page").classList.add("hidden");
+  document.querySelector(".congratulations-page").classList.remove("hidden");
+  clearInterval(gameTimer);
+  document.querySelector(".timer").innerText = formatTime(secondsPassed);
+}
+
+function formatTime(seconds) {
+  var mins = Math.floor(seconds / 60).toString();
+  seconds = (seconds % 60).toString();
+
+  if (mins > 0)
+    return `${mins} minute${mins == 1 ? "" : "s"} and ${seconds} second${seconds == 1 ? "" : "s"}`;
+  else
+    return `${seconds} seconds`;
+}
+
 
 document.addEventListener('click', function(event) {
   if (event.target.classList.contains("individ-card") && canSelect) {
@@ -69,3 +107,5 @@ document.addEventListener('click', function(event) {
     }
   }
 });
+
+window.onload = startGame(); // starts the game when the page loads

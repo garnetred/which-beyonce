@@ -19,7 +19,6 @@ class Deck {
     if (this.selectedCards.length === 2) {
       if (this.selectedCards[0].matchInfo === this.selectedCards[1].matchInfo) {
         this.moveToMatched();
-        matchedCards();
       } else {
         unmatchedCards();
       }
@@ -28,10 +27,10 @@ class Deck {
 
   moveToMatched() {
     // copy the selected cards into the matchedCards array
-    matchedCards();
     this.matchedCards.push(this.selectedCards[0]);
     this.matchedCards.push(this.selectedCards[1]);
-    this.selectedCards = [];
+    matchedCards();
+    this.clearSelectedCards();
   }
 
   selectCards(event) {

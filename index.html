@@ -7,7 +7,7 @@
       <header>
         <h1>Which Beyoncé</h1>
       </header>
-      <section class='game-page'>
+      <section class='hidden game-page'>
       <aside>
         <section>
           <p class="matches">Matches This Round</p>
@@ -42,12 +42,12 @@
         </section>
       </main>
       </section>
-      <section class="hidden congratulations-page">
+      <section class="congratulations-page">
         <h1 class="congrats">Congratulations!</h1>
         <h3>All 5 matches were found in</h3>
-        <h2>....seconds</h2>
+        <h2 class="timer"></h2>
         <section class="play-buttons">
-          <button>Play Again</button>
+          <button onclick="startGame()">Play Again</button>
           <button>New Game</button>
         </section>
       </section>
