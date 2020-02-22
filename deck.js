@@ -10,12 +10,6 @@ class Deck {
   }
 
   checkSelectedCards() {
-    // check if selectedcards[0] is equal to selectedcards[1]
-    // if true then move to matched array using the movetomatched function
-    // if (this.selectedCards.length ===1) {
-    //   console.log("not enough cards!")
-    //   return;
-    // }
     if (this.selectedCards.length === 2) {
       if (this.selectedCards[0].matchInfo === this.selectedCards[1].matchInfo) {
         this.moveToMatched();

@@ -4,6 +4,7 @@ var deck = new Deck();
 var canSelect = true;
 var gameTimer;
 var secondsPassed = 0;
+var matchesThisRound = 0;
 
 function createCards() {
   for (var i = 0; i < 5; i++) {
@@ -29,33 +30,29 @@ function addCardsToHTML() {
 }
 
 function matchedCards() {
-  for (var i = 0; i < deck.selectedCards.length; i++){
+  matchesThisRound++;
+  for (var i = 0; i < deck.selectedCards.length; i++) {
     var id = deck.cards.indexOf(deck.selectedCards[i]);
-    document.getElementById(`${id}`).classList.add('match');
-    document.getElementById(`${id}`).classList.add('disappeared');
-    console.log(deck.matchedCards.length);
+    document.getElementById(`${id}`).classList.add("match");
+    document.getElementById(`${id}`).classList.add("disappeared");
     if (deck.matchedCards.length === 10) {
       finishGame();
     }
   }
-  // this.selectedCards[0].classList.add('match');
-  // this.selectedCards[1].classList.add('match');
-  // this.selectedcards[0].classList.add('hide');
-  // this.selectedcards[1].classList.add('hide');
-  // this.selectedCards = [];
 }
 
 function unmatchedCards() {
-  for (var i = 0; i < deck.selectedCards.length; i++){
-    var id = deck.cards.indexOf(deck.selectedCards[i])
-    document.getElementById(`${id}`).classList.toggle('is-flipped');
+  for (var i = 0; i < deck.selectedCards.length; i++) {
+    var id = deck.cards.indexOf(deck.selectedCards[i]);
+    flipCard(id);
   }
 }
 
-// function flipCards(cardID) {
-//   var id = deck.cards.indexOf(deck.selectedCards[i].matchInfo)
-//   document.getElementById(`${id}`).classList.toggle('is-flipped');
-// }
+// take a card's ID and flip it on the page
+function flipCard(id) {
+  // var id = deck.cards.indexOf(deck.selectedCards[i].matchInfo)
+  document.getElementById(`${id}`).classList.toggle("is-flipped");
+}
 
 function startTimer() {
   secondsPassed = 0;
@@ -65,8 +62,9 @@ function startTimer() {
 }
 
 function startGame() {
-  cardView.innerHTML = "";
-  deck = new Deck();
+  cardView.innerHTML = ""; // clear cards from page
+  matchesThisRound = 0; 
+  deck = new Deck(); // reset the deck
   createCards();
   deck.shuffle();
   addCardsToHTML();
@@ -82,27 +80,29 @@ function finishGame() {
   document.querySelector(".timer").innerText = formatTime(secondsPassed);
 }
 
-function formatTime(seconds) {
+// takes in a number of seconds and return a string formatted with the minutes and seconds
+function formatTime(seconds) { 
   var mins = Math.floor(seconds / 60).toString();
   seconds = (seconds % 60).toString();
 
   if (mins > 0)
     return `${mins} minute${mins == 1 ? "" : "s"} and ${seconds} second${seconds == 1 ? "" : "s"}`;
-  else
+  else 
     return `${seconds} seconds`;
 }
 
-
-document.addEventListener('click', function(event) {
+document.addEventListener("click", function(event) {
   if (event.target.classList.contains("individ-card") && canSelect) {
     deck.selectCards(event);
-    event.target.classList.toggle('is-flipped');
+    // event.target.classList.toggle('is-flipped');
+    flipCard(event.target.id);
     if (deck.selectedCards.length == 2) {
-      canSelect = false;
+      canSelect = false; // disable selecting of cards
       setTimeout(function() {
-        deck.checkSelectedCards();
-        deck.clearSelectedCards();
-        canSelect = true;
+        // after n seconds,
+        deck.checkSelectedCards(); // check if the cards match (and do logic if they do)
+        deck.clearSelectedCards(); // clear all the cards we've selected
+        canSelect = true; // allow the user to select cards again
       }, 1500);
     }
   }
