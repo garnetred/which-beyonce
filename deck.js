@@ -16,14 +16,12 @@ class Deck {
     //   console.log("not enough cards!")
     //   return;
     // }
-      if (this.selectedCards.length===2) {
-       if(this.selectedCards[0].matchInfo ===
-        this.selectedCards[1].matchInfo) {
-          console.log("it's a match!");
+    if (this.selectedCards.length === 2) {
+      if (this.selectedCards[0].matchInfo === this.selectedCards[1].matchInfo) {
         this.moveToMatched();
+        matchedCards();
       } else {
         unmatchedCards();
-        this.selectedCards = [];
       }
     }
   }
@@ -37,16 +35,19 @@ class Deck {
   }
 
   selectCards(event) {
-  //add or remove the selected cards to the selected cards array
-  var cardJustClicked = event.target.id;
-  var card = this.cards[cardJustClicked];
-  var index = this.selectedCards.indexOf(card);
+    //add or remove the selected cards to the selected cards array
+    var cardJustClicked = event.target.id;
+    var card = this.cards[cardJustClicked];
+    var index = this.selectedCards.indexOf(card);
 
-  if (index===-1) {
-    this.selectedCards.push(card);
-    this.checkSelectedCards();
-  } else {
-    this.selectedCards.splice(index, 1);
-  }
+    if (index === -1) {
+      this.selectedCards.push(card);
+    } else {
+      this.selectedCards.splice(index, 1);
     }
   }
+
+  clearSelectedCards() {
+    this.selectedCards = [];
+  }
+}

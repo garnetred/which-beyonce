@@ -1,5 +1,7 @@
 var cardView = document.querySelector(".card-view");
 var deck = new Deck();
+// boolean that controls whether or not we can click cards
+var canSelect = true;
 
 function createCards() {
   for (var i = 0; i < 5; i++) {
@@ -54,9 +56,16 @@ deck.shuffle();
 addCardsToHTML();
 
 document.addEventListener('click', function(event) {
-  if (event.target.classList.contains("individ-card")) {
+  if (event.target.classList.contains("individ-card") && canSelect) {
     deck.selectCards(event);
-    // flipCards(event);
     event.target.classList.toggle('is-flipped');
+    if (deck.selectedCards.length == 2) {
+      canSelect = false;
+      setTimeout(function() {
+        deck.checkSelectedCards();
+        deck.clearSelectedCards();
+        canSelect = true;
+      }, 1500);
+    }
   }
 });
