@@ -45,16 +45,16 @@ function matchedCards() {
     document.getElementById(`${id}`).classList.add("match");
     document.getElementById(`${id}`).classList.add("disappeared");
     matchImages();
-    if (deck.matchedCards.length === 10) {
-      setInterval (finishGame(), 5000);
-    }
+  }
+  if (deck.matchedCards.length === 10) {
+    setTimeout(finishGame, 1000);
   }
 }
 
 function matchImages() {
-      for (var b = 0; b < deck.matchedCards.length; b++) {
-        miniCard[turn].innerHTML = `<img src = "assets/${deck.matchedCards[b].image}.jpg">`;
-          }
+  for (var b = 0; b < deck.matchedCards.length; b++) {
+    miniCard[turn].innerHTML = `<img src = "assets/${deck.matchedCards[b].image}.jpg">`;
+  }
 }
 
 function unmatchedCards() {
@@ -66,7 +66,6 @@ function unmatchedCards() {
 
 // take a card's ID and flip it on the page
 function flipCard(id) {
-  // var id = deck.cards.indexOf(deck.selectedCards[i].matchInfo)
   document.getElementById(`${id}`).classList.toggle("is-flipped");
 }
 
@@ -94,41 +93,30 @@ function startGame() {
 }
 
 function finishGame() {
+  clearInterval(gameTimer);
   matchesThisRound = 0;
-  matches.innerText = `${matchesThisRound}`;
+  matches.innerText = "0";
   document.querySelector(".game-page").classList.add("hidden");
   document.querySelector(".congratulations-page").classList.remove("hidden");
   highscore.push(secondsPassed);
-  console.log(highscore)
   displayHighScore();
-  clearInterval(gameTimer);
   document.querySelector(".timer").innerText = formatTime(secondsPassed);
 }
 
 function displayHighScore() {
-  console.log(highscore);
-  if (numOfRounds === 1) {
-    highscore.length = 1;
+  if (highscore.length > 0) {
     document.querySelector('.first-playthrough').innerText = `${highscore[0]} seconds`;
-  } else  if (numOfRounds === 2) {
-    highscore.length = 2;
-  document.querySelector('.first-playthrough').innerText = `${highscore[0]} seconds`;
-  document.querySelector('.second-playthrough').innerText = `${parseInt(highscore[1])} seconds`;
-} else if (numOfRounds === 3) {
-  highscore.length = 3;
-  document.querySelector('.first-playthrough').innerText = `${highscore[0]} seconds`;
-  document.querySelector('.second-playthrough').innerText = `${parseInt(highscore[1])} seconds`;
-  document.querySelector('.third-playthrough').innerText = `${parseInt(highscore[2])} seconds`;
-} else if (numOfRounds >=4) {
-  highscore.sort(function(a, b) {
-    return a-b;
-  })
-  highscore.length = 3;
-  document.querySelector('.first-playthrough').innerText = `${highscore[0]} seconds`;
-  document.querySelector('.second-playthrough').innerText = `${parseInt(highscore[1])} seconds`;
-  document.querySelector('.third-playthrough').innerText = `${parseInt(highscore[2])} seconds`;
-}
-console.log(highscore);
+  }
+  if (highscore.length > 1) {
+    document.querySelector('.second-playthrough').innerText = `${highscore[1]} seconds`;
+  } 
+  if (highscore.length > 2) {
+    document.querySelector('.third-playthrough').innerText = `${highscore[2]} seconds`;
+  }
+  if (highscore.length > 3) {
+    highscore = highscore.sort((a, b) => a - b);
+    highscore = highscore.slice(0, 4);
+  }
 }
 
 // takes in a number of seconds and return a string formatted with the minutes and seconds
