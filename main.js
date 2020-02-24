@@ -8,7 +8,7 @@ var canSelect = true;
 var gameTimer;
 var secondsPassed = 0;
 var matchesThisRound = 0;
-var numOfRounds = 0;
+// var numOfRounds = 0;
 var turn = -1;
 
 function createCards() {
@@ -45,9 +45,9 @@ function matchedCards() {
     document.getElementById(`${id}`).classList.add("match");
     document.getElementById(`${id}`).classList.add("disappeared");
     matchImages();
-    if (deck.matchedCards.length === 10) {
-      setInterval (finishGame(), 5000);
     }
+    if (deck.matchedCards.length === 10) {
+      setTimeout(finishGame, 1000);
   }
 }
 
@@ -78,7 +78,7 @@ function startTimer() {
 }
 
 function startGame() {
-  numOfRounds++;
+  // numOfRounds++;
     for (var i = 0; i < 5; i++){
       miniCard[i].innerHTML = '';
     }
@@ -99,36 +99,72 @@ function finishGame() {
   document.querySelector(".game-page").classList.add("hidden");
   document.querySelector(".congratulations-page").classList.remove("hidden");
   highscore.push(secondsPassed);
+  var stringifiedArray = JSON.stringify(highscore);
+  localStorage.setItem('highScoreArray', stringifiedArray)
   console.log(highscore)
   displayHighScore();
+  // numOfRounds = 0;
   clearInterval(gameTimer);
   document.querySelector(".timer").innerText = formatTime(secondsPassed);
+  console.log("the game is finished");
 }
 
 function displayHighScore() {
   console.log(highscore);
-  if (numOfRounds === 1) {
-    highscore.length = 1;
+  if (highscore.length === 1) {
+    // highscore.length = 1;
     document.querySelector('.first-playthrough').innerText = `${highscore[0]} seconds`;
-  } else  if (numOfRounds === 2) {
-    highscore.length = 2;
+  } else  if (highscore.length === 2) {
+    // highscore.length = 2;
   document.querySelector('.first-playthrough').innerText = `${highscore[0]} seconds`;
-  document.querySelector('.second-playthrough').innerText = `${parseInt(highscore[1])} seconds`;
-} else if (numOfRounds === 3) {
-  highscore.length = 3;
+  document.querySelector('.second-playthrough').innerText = `${highscore[1]} seconds`;
+} else if (highscore.length === 3) {
+  // highscore.length = 3;
   document.querySelector('.first-playthrough').innerText = `${highscore[0]} seconds`;
-  document.querySelector('.second-playthrough').innerText = `${parseInt(highscore[1])} seconds`;
-  document.querySelector('.third-playthrough').innerText = `${parseInt(highscore[2])} seconds`;
-} else if (numOfRounds >=4) {
+  document.querySelector('.second-playthrough').innerText = `${highscore[1]} seconds`;
+  document.querySelector('.third-playthrough').innerText = `${highscore[2]} seconds`;
+} else if (highscore.length >=4) {
   highscore.sort(function(a, b) {
     return a-b;
   })
-  highscore.length = 3;
+  highscore = highscore.pop();
   document.querySelector('.first-playthrough').innerText = `${highscore[0]} seconds`;
-  document.querySelector('.second-playthrough').innerText = `${parseInt(highscore[1])} seconds`;
-  document.querySelector('.third-playthrough').innerText = `${parseInt(highscore[2])} seconds`;
+  document.querySelector('.second-playthrough').innerText = `${highscore[1]} seconds`;
+  document.querySelector('.third-playthrough').innerText = `${highscore[2]} seconds`;
 }
+
+  // JSON.stringify(localStorage.setItem('highScoreArray', highscore));
+
 console.log(highscore);
+}
+
+function retrieveHighScores() {
+  // store the array of high Scores
+  //on window load we want to trigger this function to retrieve the actual high scores
+  //then we want to display those
+
+  var parsedArray = JSON.parse(localStorage.getItem('highScoreArray'));
+  if (parsedArray.length > 0) {
+      document.querySelector('.first-playthrough').innerText = `${parsedArray[0]} seconds`;
+      document.querySelector('.second-playthrough').innerText = '';
+      document.querySelector('.third-playthrough').innerText = '';
+  }
+   if (parsedArray.length > 1) {
+    document.querySelector('.first-playthrough').innerText = `${parsedArray[0]} seconds`;
+    document.querySelector('.second-playthrough').innerText = `${parsedArray[1]}`;
+      document.querySelector('.third-playthrough').innerText = '';
+  }
+   if (parsedArray.length > 2) {
+    document.querySelector('.first-playthrough').innerText = `${parsedArray[0]} seconds`;
+    document.querySelector('.second-playthrough').innerText = `${parsedArray[1]}`;
+    document.querySelector('.third-playthrough').innerText = `${parsedArray[2]}`;
+  }
+
+
+
+  // highscore = parsedArray;
+  // displayHighScore();
+
 }
 
 // takes in a number of seconds and return a string formatted with the minutes and seconds
@@ -159,4 +195,10 @@ document.addEventListener("click", function(event) {
   }
 });
 
-window.onload = startGame(); // starts the game when the page loads
+window.onload = function() {
+    this.startGame();
+    if (localStorage.getItem('highScoreArray')) {
+      this.retrieveHighScores();
+    }
+
+};
