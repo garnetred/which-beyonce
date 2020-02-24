@@ -5,8 +5,19 @@ class Deck {
     this.selectedCards = [];
   }
 
-  shuffle() {
-    // shuffle cards using some method
+  shuffle(array) {
+    // shuffles cards using Fisher Yates shuffle!
+    var len = array.length;
+    var j;
+    var temporaryValues;
+
+    while (len) {
+      j = Math.floor(Math.random() * len--);
+      temporaryValues = array[len];
+      array[len] = array[j];
+      array[j] = temporaryValues;
+    }
+    console.log(this.cards);
   }
 
   checkSelectedCards() {
