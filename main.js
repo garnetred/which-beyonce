@@ -52,9 +52,9 @@ function matchedCards() {
 }
 
 function matchImages() {
-      for (var b = 0; b < deck.matchedCards.length; b++) {
-        miniCard[turn].innerHTML = `<img src = "assets/${deck.matchedCards[b].image}.jpg">`;
-          }
+  for (var b = 0; b < deck.matchedCards.length; b++) {
+    miniCard[turn].innerHTML = `<img src = "assets/${deck.matchedCards[b].image}.jpg">`;
+  }
 }
 
 function unmatchedCards() {
@@ -66,7 +66,6 @@ function unmatchedCards() {
 
 // take a card's ID and flip it on the page
 function flipCard(id) {
-  // var id = deck.cards.indexOf(deck.selectedCards[i].matchInfo)
   document.getElementById(`${id}`).classList.toggle("is-flipped");
 }
 
@@ -94,8 +93,9 @@ function startGame() {
 }
 
 function finishGame() {
+  clearInterval(gameTimer);
   matchesThisRound = 0;
-  matches.innerText = `${matchesThisRound}`;
+  matches.innerText = "0";
   document.querySelector(".game-page").classList.add("hidden");
   document.querySelector(".congratulations-page").classList.remove("hidden");
   highscore.push(secondsPassed);
@@ -110,61 +110,25 @@ function finishGame() {
 }
 
 function displayHighScore() {
-  console.log(highscore);
-  if (highscore.length === 1) {
-    // highscore.length = 1;
+  if (highscore.length > 0) {
     document.querySelector('.first-playthrough').innerText = `${highscore[0]} seconds`;
-  } else  if (highscore.length === 2) {
-    // highscore.length = 2;
-  document.querySelector('.first-playthrough').innerText = `${highscore[0]} seconds`;
-  document.querySelector('.second-playthrough').innerText = `${highscore[1]} seconds`;
-} else if (highscore.length === 3) {
-  // highscore.length = 3;
-  document.querySelector('.first-playthrough').innerText = `${highscore[0]} seconds`;
-  document.querySelector('.second-playthrough').innerText = `${highscore[1]} seconds`;
-  document.querySelector('.third-playthrough').innerText = `${highscore[2]} seconds`;
-} else if (highscore.length >=4) {
-  highscore.sort(function(a, b) {
-    return a-b;
-  })
-  highscore = highscore.pop();
-  document.querySelector('.first-playthrough').innerText = `${highscore[0]} seconds`;
-  document.querySelector('.second-playthrough').innerText = `${highscore[1]} seconds`;
-  document.querySelector('.third-playthrough').innerText = `${highscore[2]} seconds`;
-}
-
-  // JSON.stringify(localStorage.setItem('highScoreArray', highscore));
-
-console.log(highscore);
+  }
+  if (highscore.length > 1) {
+    document.querySelector('.second-playthrough').innerText = `${highscore[1]} seconds`;
+  }
+  if (highscore.length > 2) {
+    document.querySelector('.third-playthrough').innerText = `${highscore[2]} seconds`;
+  }
+  if (highscore.length > 3) {
+    highscore = highscore.sort((a, b) => a - b);
+    highscore = highscore.slice(0, 4);
+  }
 }
 
 function retrieveHighScores() {
-  // store the array of high Scores
-  //on window load we want to trigger this function to retrieve the actual high scores
-  //then we want to display those
-
   var parsedArray = JSON.parse(localStorage.getItem('highScoreArray'));
-  if (parsedArray.length > 0) {
-      document.querySelector('.first-playthrough').innerText = `${parsedArray[0]} seconds`;
-      document.querySelector('.second-playthrough').innerText = '';
-      document.querySelector('.third-playthrough').innerText = '';
-  }
-   if (parsedArray.length > 1) {
-    document.querySelector('.first-playthrough').innerText = `${parsedArray[0]} seconds`;
-    document.querySelector('.second-playthrough').innerText = `${parsedArray[1]}`;
-      document.querySelector('.third-playthrough').innerText = '';
-  }
-   if (parsedArray.length > 2) {
-    document.querySelector('.first-playthrough').innerText = `${parsedArray[0]} seconds`;
-    document.querySelector('.second-playthrough').innerText = `${parsedArray[1]}`;
-    document.querySelector('.third-playthrough').innerText = `${parsedArray[2]}`;
-  }
-
-
-
-  // highscore = parsedArray;
-  // displayHighScore();
-
+  highscore = parsedArray;
+  displayHighScore();
 }
 
 // takes in a number of seconds and return a string formatted with the minutes and seconds
