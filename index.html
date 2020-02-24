@@ -11,20 +11,20 @@
       <aside>
         <section>
           <p class="matches">Matches This Round</p>
-          <h2>0</h2>
+          <h2 class="numOfMatches">0</h2>
           <section class="matched-cards">
-            <div class='mini-card'></div>
-            <div class='mini-card'></div>
-            <div class='mini-card'></div>
-            <div class='mini-card'></div>
-            <div class='mini-card'></div>
+            <div class='mini-card' id ="slot0"></div>
+            <div class='mini-card' id ="slot1"></div>
+            <div class='mini-card' id='slot2'></div>
+            <div class='mini-card' id='slot3'></div>
+            <div class='mini-card' id='slot4'></div>
           </section>
         </section>
         <section class="scores">
-          <p>Top 3 Times</p>
-          <p>...seconds</p>
-          <p>...seconds</p>
-          <p>...seconds</p>
+          <p>Top Scores</p>
+          <p class="first-playthrough"></p>
+          <p class="second-playthrough"></p>
+          <p class="third-playthrough"></p>
         </section>
       </aside>
       <main>
@@ -42,7 +42,7 @@
         </section>
       </main>
       </section>
-      <section class="congratulations-page">
+      <section class="congratulations-page hidden">
         <h1 class="congrats">Congratulations!</h1>
         <h3>All 5 matches were found in</h3>
         <h2 class="timer"></h2>
