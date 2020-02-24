@@ -8,7 +8,7 @@ var canSelect = true;
 var gameTimer;
 var secondsPassed = 0;
 var matchesThisRound = 0;
-var numOfRounds = 0;
+// var numOfRounds = 0;
 var turn = -1;
 
 function createCards() {
@@ -45,9 +45,9 @@ function matchedCards() {
     document.getElementById(`${id}`).classList.add("match");
     document.getElementById(`${id}`).classList.add("disappeared");
     matchImages();
-  }
-  if (deck.matchedCards.length === 10) {
-    setTimeout(finishGame, 1000);
+    }
+    if (deck.matchedCards.length === 10) {
+      setTimeout(finishGame, 1000);
   }
 }
 
@@ -77,7 +77,7 @@ function startTimer() {
 }
 
 function startGame() {
-  numOfRounds++;
+  // numOfRounds++;
     for (var i = 0; i < 5; i++){
       miniCard[i].innerHTML = '';
     }
@@ -99,8 +99,14 @@ function finishGame() {
   document.querySelector(".game-page").classList.add("hidden");
   document.querySelector(".congratulations-page").classList.remove("hidden");
   highscore.push(secondsPassed);
+  var stringifiedArray = JSON.stringify(highscore);
+  localStorage.setItem('highScoreArray', stringifiedArray)
+  console.log(highscore)
   displayHighScore();
+  // numOfRounds = 0;
+  clearInterval(gameTimer);
   document.querySelector(".timer").innerText = formatTime(secondsPassed);
+  console.log("the game is finished");
 }
 
 function displayHighScore() {
@@ -109,7 +115,7 @@ function displayHighScore() {
   }
   if (highscore.length > 1) {
     document.querySelector('.second-playthrough').innerText = `${highscore[1]} seconds`;
-  } 
+  }
   if (highscore.length > 2) {
     document.querySelector('.third-playthrough').innerText = `${highscore[2]} seconds`;
   }
@@ -117,6 +123,12 @@ function displayHighScore() {
     highscore = highscore.sort((a, b) => a - b);
     highscore = highscore.slice(0, 4);
   }
+}
+
+function retrieveHighScores() {
+  var parsedArray = JSON.parse(localStorage.getItem('highScoreArray'));
+  highscore = parsedArray;
+  displayHighScore();
 }
 
 // takes in a number of seconds and return a string formatted with the minutes and seconds
@@ -147,4 +159,10 @@ document.addEventListener("click", function(event) {
   }
 });
 
-window.onload = startGame(); // starts the game when the page loads
+window.onload = function() {
+    this.startGame();
+    if (localStorage.getItem('highScoreArray')) {
+      this.retrieveHighScores();
+    }
+
+};
