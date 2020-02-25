@@ -23,8 +23,8 @@ function createCards() {
 }
 
 function addPlayers() {
-  var player1 = new Player(document.querySelector('#player-one-name').value);
-  var player2 = new Player(document.querySelector('#player-two-name').value);
+  var player1 = new Player(player1name.value);
+  var player2 = new Player(player2name.value);
   players.push(player1);
   players.push(player2);
 }
@@ -114,6 +114,7 @@ function startGame() {
   createCards();
   addCardsToHTML();
   startTimer();
+  addPlayers();
   document.querySelector(".game-page").classList.remove("hidden");
   document.querySelector(".two-player-page").classList.add('hidden');
   document.querySelector(".congratulations-page").classList.add("hidden");
