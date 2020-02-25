@@ -6,10 +6,14 @@ var deck = new Deck();
 // boolean that controls whether or not we can click cards
 var canSelect = true;
 var gameTimer;
-var secondsPassed = 0;
+var player1Time;
+var player2Time;
+var player1name = document.querySelector('#player-one-name');
+var player2name = document.querySelector('#player-two-name');
 var matchesThisRound = 0;
-// var numOfRounds = 0;
+var numOfRounds = 0;
 var turn = -1;
+var players = [];
 
 function createCards() {
   for (var i = 0; i < 5; i++) {
@@ -17,6 +21,14 @@ function createCards() {
     deck.cards.push(new Card(`bey${i}`, i));
   }
 }
+
+function addPlayers() {
+  var player1 = new Player(document.querySelector('#player-one-name').value);
+  var player2 = new Player(document.querySelector('#player-two-name').value);
+  players.push(player1);
+  players.push(player2);
+}
+
 
 function addCardsToHTML() {
   deck.shuffle(deck.cards);
@@ -46,8 +58,13 @@ function matchedCards() {
     document.getElementById(`${id}`).classList.add("disappeared");
     matchImages();
     }
-    if (deck.matchedCards.length === 10) {
+
+    if (deck.matchedCards.length === 10 && numOfRounds === 1)  {
+      setTimeout(playerTwoGame, 1000)
+      clearInterval(gameTimer);
+    } else if (deck.matchedCards.length === 10 && numOfRounds === 2) {
       setTimeout(finishGame, 1000);
+      clearInterval(gameTimer);
   }
 }
 
@@ -70,14 +87,23 @@ function flipCard(id) {
 }
 
 function startTimer() {
-  secondsPassed = 0;
+  var player1Time = 0;
   gameTimer = setInterval(function() {
-    secondsPassed++;
+    player1Time++;
+  }, 1000);
+}
+
+function startSecondTimer() {
+  player2Time = 0;
+  gameTimer = setInterval(function() {
+    player2Time++;
   }, 1000);
 }
 
 function startGame() {
-  // numOfRounds++;
+  numOfRounds++;
+  var currentPlayerName = document.querySelector('.current-player-name');
+  currentPlayerName.innerText = `${player1name.value}'s Turn`
     for (var i = 0; i < 5; i++){
       miniCard[i].innerHTML = '';
     }
@@ -89,6 +115,26 @@ function startGame() {
   addCardsToHTML();
   startTimer();
   document.querySelector(".game-page").classList.remove("hidden");
+  document.querySelector(".two-player-page").classList.add('hidden');
+  document.querySelector(".congratulations-page").classList.add("hidden");
+}
+
+function playerTwoGame() {
+  numOfRounds++;
+  var currentPlayerName = document.querySelector('.current-player-name');
+  currentPlayerName.innerText = `${player2name.value}'s Turn`
+    for (var i = 0; i < 5; i++){
+      miniCard[i].innerHTML = '';
+    }
+  turn = -1;
+  cardView.innerHTML = ""; // clear cards from page
+  matchesThisRound = 0;
+  deck = new Deck(); // reset the deck
+  createCards();
+  addCardsToHTML();
+  startSecondTimer();
+  document.querySelector(".game-page").classList.remove("hidden");
+  document.querySelector(".two-player-page").classList.add('hidden');
   document.querySelector(".congratulations-page").classList.add("hidden");
 }
 
@@ -97,33 +143,41 @@ function finishGame() {
   matchesThisRound = 0;
   matches.innerText = "0";
   document.querySelector(".game-page").classList.add("hidden");
+  if (player1Time < player2Time) {
+    document.querySelector('.congrats').innerText = `Congratulations, ${player1name.value}`
+      document.querySelector(".timer").innerText = formatTime(player1Time);
+  } else {
+    document.querySelector('.congrats').innerText = `Congratulations, ${player2name.value}`;
+    document.querySelector(".timer").innerText = formatTime(player2Time);
+  }
   document.querySelector(".congratulations-page").classList.remove("hidden");
-  highscore.push(secondsPassed);
+  highscore.push(`${player1Time} - ${player1name}`);
+  highscore.push(`${player2Time} - ${player2name}`);
   var stringifiedArray = JSON.stringify(highscore);
   localStorage.setItem('highScoreArray', stringifiedArray)
   console.log(highscore)
-  displayHighScore();
-  // numOfRounds = 0;
+  // displayHighScore();
+  numOfRounds = 0;
   clearInterval(gameTimer);
-  document.querySelector(".timer").innerText = formatTime(secondsPassed);
   console.log("the game is finished");
+  players = [];
 }
 
-function displayHighScore() {
-  if (highscore.length > 0) {
-    document.querySelector('.first-playthrough').innerText = `${highscore[0]} seconds`;
-  }
-  if (highscore.length > 1) {
-    document.querySelector('.second-playthrough').innerText = `${highscore[1]} seconds`;
-  }
-  if (highscore.length > 2) {
-    document.querySelector('.third-playthrough').innerText = `${highscore[2]} seconds`;
-  }
-  if (highscore.length > 3) {
-    highscore = highscore.sort((a, b) => a - b);
-    highscore = highscore.slice(0, 4);
-  }
-}
+// function displayHighScore() {
+//   if (highscore.length > 0) {
+//     document.querySelector('.first-playthrough').innerText = `${highscore[0]} seconds`;
+//   }
+//   if (highscore.length > 1) {
+//     document.querySelector('.second-playthrough').innerText = `${highscore[1]} seconds`;
+//   }
+//   if (highscore.length > 2) {
+//     document.querySelector('.third-playthrough').innerText = `${highscore[2]} seconds`;
+//   }
+//   if (highscore.length > 3) {
+//     highscore = highscore.sort((a, b) => a - b);
+//     highscore = highscore.slice(0, 4);
+//   }
+// }
 
 function retrieveHighScores() {
   var parsedArray = JSON.parse(localStorage.getItem('highScoreArray'));
@@ -142,6 +196,10 @@ function formatTime(seconds) {
     return `${seconds} seconds`;
 }
 
+function refreshPage() {
+  location.reload();
+}
+
 document.addEventListener("click", function(event) {
   if (event.target.classList.contains("individ-card") && canSelect) {
     deck.selectCards(event);
@@ -156,13 +214,16 @@ document.addEventListener("click", function(event) {
         canSelect = true; // allow the user to select cards again
       }, 2000);
     }
+    }
+    if (event.target.id === 'begin-game') {
+      startGame();
   }
 });
 
-window.onload = function() {
-    this.startGame();
-    if (localStorage.getItem('highScoreArray')) {
-      this.retrieveHighScores();
-    }
-
-};
+// window.onload = function() {
+//     this.startGame();
+//     if (localStorage.getItem('highScoreArray')) {
+//       this.retrieveHighScores();
+//     }
+//
+// };
