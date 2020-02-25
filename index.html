@@ -7,9 +7,25 @@
       <header>
         <h1>Which Beyoncé</h1>
       </header>
-      <section class='hidden game-page'>
+      <section class="two-player-page">
+        <main>
+          <fieldset>
+            <section class="player-one-info">
+              <label for="player-one-name">PLAYER ONE'S NAME</label>
+              <input type="text" name="player-one-name" id="player-one-name">
+            </section>
+            <section class="player-two-info">
+              <label for="player-two-name">PLAYER TWO'S NAME</label>
+              <input type="text" name="player-two-name" id="player-two-name">
+            </section>
+              <button id="begin-game" class="start-two-player">Begin Game</button>
+          </fieldset>
+        </main>
+      </section>
+      <section class='game-page hidden'>
       <aside>
         <section>
+          <h1 class="current-player-name"></h1>
           <p class="matches">Matches This Round</p>
           <h2 class="numOfMatches">0</h2>
           <section class="matched-cards">
@@ -29,26 +45,16 @@
       </aside>
       <main>
         <section class='card-view'>
-          <!-- <div class='individ-card'>B</div>
-          <div class='individ-card'>B</div>
-          <div class='individ-card'>B</div>
-          <div class='individ-card'>B</div>
-          <div class='individ-card'>B</div>
-          <div class='individ-card'>B</div>
-          <div class='individ-card'>B</div>
-          <div class='individ-card'>B</div>
-          <div class='individ-card'>B</div>
-          <div class='individ-card'>B</div> -->
         </section>
       </main>
       </section>
       <section class="congratulations-page hidden">
-        <h1 class="congrats">Congratulations!</h1>
+        <h1 class="congrats"></h1>
         <h3>All 5 matches were found in</h3>
         <h2 class="timer"></h2>
         <section class="play-buttons">
           <button onclick="startGame()">Play Again</button>
-          <button>New Game</button>
+          <button id="new-game" onclick="refreshPage()">New Game</button>
         </section>
       </section>
     </body>
