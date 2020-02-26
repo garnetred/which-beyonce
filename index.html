@@ -1,15 +1,15 @@
 <!<!DOCTYPE html>
   <html>
-  <head>
-    <link rel="stylesheet" href="styles.css">
-  </head>
+    <head>
+      <link rel="stylesheet" href="styles.css">
+    </head>
     <body>
       <header>
         <h1>Which Beyoncé</h1>
       </header>
       <section class="two-player-page">
         <main>
-          <fieldset>
+          <section class="form">
             <section class="player-one-info">
               <label for="player-one-name">PLAYER ONE'S NAME</label>
               <input type="text" name="player-one-name" id="player-one-name">
@@ -19,45 +19,45 @@
               <input type="text" name="player-two-name" id="player-two-name">
             </section>
               <button id="begin-game" class="start-two-player">Begin Game</button>
-          </fieldset>
+          </section>
         </main>
       </section>
       <section class='game-page hidden'>
-      <aside>
-        <section>
-          <h1 class="current-player-name"></h1>
-          <p class="matches">Matches This Round</p>
-          <h2 class="numOfMatches">0</h2>
-          <section class="matched-cards">
-            <div class='mini-card' id ="slot0"></div>
-            <div class='mini-card' id ="slot1"></div>
-            <div class='mini-card' id='slot2'></div>
-            <div class='mini-card' id='slot3'></div>
-            <div class='mini-card' id='slot4'></div>
+        <aside>
+          <section>
+            <h1 class="current-player-name"></h1>
+            <p class="matches">Matches This Round</p>
+            <h2 class="numOfMatches">0</h2>
+            <section class="matched-cards">
+              <div class='mini-card' id ="slot0"></div>
+              <div class='mini-card' id ="slot1"></div>
+              <div class='mini-card' id='slot2'></div>
+              <div class='mini-card' id='slot3'></div>
+              <div class='mini-card' id='slot4'></div>
+            </section>
+          </section>
+          <section class="scores">
+            <p>Top Scores</p>
+            <section id="highscores"></section>
+          </section>
+        </aside>
+        <main>
+          <section class='card-view'>
+          </section>
+        </main>
+        </section>
+        <section class="congratulations-page hidden">
+          <h1 class="congrats"></h1>
+          <h3>All 5 matches were found in</h3>
+          <h2 class="timer"></h2>
+          <section class="play-buttons">
+            <button onclick="startGame()">Play Again</button>
+            <button id="new-game" onclick="refreshPage()">New Game</button>
           </section>
         </section>
-        <section class="scores">
-          <p>Top Scores</p>
-          <section id="highscores"></section>
-        </section>
-      </aside>
-      <main>
-        <section class='card-view'>
-        </section>
-      </main>
-      </section>
-      <section class="congratulations-page hidden">
-        <h1 class="congrats"></h1>
-        <h3>All 5 matches were found in</h3>
-        <h2 class="timer"></h2>
-        <section class="play-buttons">
-          <button onclick="startGame()">Play Again</button>
-          <button id="new-game" onclick="refreshPage()">New Game</button>
-        </section>
-      </section>
     </body>
-    <script src="card.js"></script>
-    <script src="deck.js"></script>
-    <script src="player.js"></script>
-    <script src="main.js"></script>
+      <script src="card.js"></script>
+      <script src="deck.js"></script>
+      <script src="player.js"></script>
+      <script src="main.js"></script>
   </html>
