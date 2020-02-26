@@ -55,8 +55,9 @@ function matchedCards() {
   matches.innerText = `${matchesThisRound}`;
   for (var i = 0; i < deck.selectedCards.length; i++) {
     var id = deck.cards.indexOf(deck.selectedCards[i]);
-    document.getElementById(`${id}`).classList.add("match");
-    document.getElementById(`${id}`).classList.add("disappeared");
+    var card = document.getElementById(`${id}`);
+    card.classList.add("match");
+    card.parentElement.classList.add("disappeared");
     matchImages();
   }
 
@@ -71,9 +72,8 @@ function matchedCards() {
 
 function matchImages() {
   for (var b = 0; b < deck.matchedCards.length; b++) {
-    miniCard[
-      turn
-    ].innerHTML = `<img src = "assets/${deck.matchedCards[b].image}.jpg">`;
+    miniCard[turn].innerHTML = 
+      `<img src = "assets/${deck.matchedCards[b].image}.jpg">`;
   }
 }
 
@@ -243,10 +243,14 @@ document.addEventListener("click", function(event) {
       canSelect = false; // disable selecting of cards
       setTimeout(function() {
         // after n seconds,
-        deck.checkSelectedCards(); // check if the cards match (and do logic if they do)
+        if (deck.checkSelectedCards()) { // check if the cards match (and do logic if they do)
+          matchedCards();
+        } else {
+          unmatchedCards();
+        }
         deck.clearSelectedCards(); // clear all the cards we've selected
         canSelect = true; // allow the user to select cards again
-      }, 2000);
+      }, 1350);
     }
   }
   if (event.target.id === "begin-game") {

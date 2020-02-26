@@ -23,8 +23,9 @@ class Deck {
     if (this.selectedCards.length === 2) {
       if (this.selectedCards[0].matchInfo === this.selectedCards[1].matchInfo) {
         this.moveToMatched();
+        return true;
       } else {
-        unmatchedCards();
+        return false;
       }
     }
   }
@@ -33,8 +34,6 @@ class Deck {
     // copy the selected cards into the matchedCards array
     this.matchedCards.push(this.selectedCards[0]);
     this.matchedCards.push(this.selectedCards[1]);
-    matchedCards();
-    this.clearSelectedCards();
   }
 
   selectCards(event) {

@@ -142,6 +142,8 @@ label {
 .card-holder {
   height: 220px;
   width: 150px;
+  opacity: 1;
+  transition: transform 1s, opacity .5s;
 }
 
 .card-holder:nth-child(1) {
@@ -285,7 +287,7 @@ label {
 }
 
 .disappeared {
-  visibility: hidden;
+  opacity: 0;
 }
 
 .form {
