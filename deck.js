@@ -17,7 +17,6 @@ class Deck {
       array[len] = array[j];
       array[j] = temporaryValues;
     }
-    console.log(this.cards);
   }
 
   checkSelectedCards() {

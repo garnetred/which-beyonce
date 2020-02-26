@@ -1,11 +1,11 @@
 class Player {
-  constructor(name) {
-    this.name = name;
-    this.wins = [];
+  constructor(playerStats) {
+    this.name = playerStats.name;
+    this.wins = playerStats.wins || [];
   }
 
   saveWin(time) {
     this.wins.push(time);
-    allPlayers[i].wins.sort((a, b) => a - b);
+    this.wins.sort((a, b) => a - b);
   }
 }

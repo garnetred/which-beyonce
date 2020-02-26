@@ -147,13 +147,7 @@ function finishGame() {
   displayHighscores();
   numOfRounds = 0;
   clearInterval(gameTimer);
-  console.log("the game is finished");
   players = [];
-}
-
-function retrieveHighScores() {
-  var parsedArray = JSON.parse(localStorage.getItem("highScoreArray"));
-  highscore = parsedArray;
 }
 
 // takes in a number of seconds and return a string formatted with the minutes and seconds
@@ -185,24 +179,26 @@ function updateHighscores() {
   var player1found = false,
     player2found = false;
   for (var i = 0; i < allPlayers.length; i++) {
-    if (allPlayers[i].name == player1name.value) {
+    if (!player1found && allPlayers[i].name == player1name.value) {
+      allPlayers[i] = new Player(allPlayers[i]);
       allPlayers[i].saveWin(player1Time);
       player1found = true;
     }
-    if (allPlayers[i].name == player2name.value) {
+    if (!player2found && allPlayers[i].name == player2name.value) {
+      allPlayers[i] = new Player(allPlayers[i]);
       allPlayers[i].saveWin(player2Time);
       player2found = true;
     }
   }
 
   if (!player1found) {
-    var plr = new Player(player1name.value);
-    plr.wins.push(player1Time);
+    var plr = new Player({name: player1name.value});
+    plr.saveWin(player1Time);
     allPlayers.push(plr);
   }
   if (!player2found) {
-    var plr = new Player(player2name.value);
-    plr.wins.push(player2Time);
+    var plr = new Player({name: player2name.value});
+    plr.saveWin(player2Time);
     allPlayers.push(plr);
   }
 
@@ -228,7 +224,6 @@ function displayHighscores() {
   var sortedTimes = sortedPlayers();
   for (var i = 0; i < sortedTimes.length && i < 3; i++) {
     var stringToAdd = `<p>${sortedTimes[i][0]} SECONDS - ${sortedTimes[i][1]}</p>`;
-    console.log(sortedTimes[i][1]);
     if (player1name.value == sortedTimes[i][1] || player2name.value == sortedTimes[i][1]) {
       stringToAdd = `<p>${sortedTimes[i][0]} SECONDS - ${sortedTimes[i][1]}
         <img src="assets/trophy.png" class="trophy" alt="Previous Winner" />
