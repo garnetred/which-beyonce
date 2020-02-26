@@ -34,6 +34,7 @@ function addCardsToHTML() {
   //shuffles cards before adding them to HTML;
   for (var i = 0; i < deck.cards.length; i++) {
     var newCard = `
+    <section class="card-holder">
     <div class="individ-card" id="${i}">
       <div class="cardface card-front">
       <p>B<p>
@@ -42,6 +43,7 @@ function addCardsToHTML() {
         <img src="assets/bey${deck.cards[i].matchInfo}.jpg">
       </div>
     </div>
+    </section>
     `;
     cardView.innerHTML += newCard;
   }
