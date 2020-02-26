@@ -29,7 +29,6 @@ function addPlayers() {
   players.push(player2);
 }
 
-
 function addCardsToHTML() {
   deck.shuffle(deck.cards);
   //shuffles cards before adding them to HTML;
@@ -60,7 +59,7 @@ function matchedCards() {
     }
 
     if (deck.matchedCards.length === 10 && numOfRounds === 1)  {
-      setTimeout(playerTwoGame, 1000)
+      setTimeout(startGame, 1000);
       clearInterval(gameTimer);
     } else if (deck.matchedCards.length === 10 && numOfRounds === 2) {
       setTimeout(finishGame, 1000);
@@ -87,7 +86,7 @@ function flipCard(id) {
 }
 
 function startTimer() {
-  var player1Time = 0;
+  player1Time = 0;
   gameTimer = setInterval(function() {
     player1Time++;
   }, 1000);
@@ -103,37 +102,23 @@ function startSecondTimer() {
 function startGame() {
   numOfRounds++;
   var currentPlayerName = document.querySelector('.current-player-name');
-  currentPlayerName.innerText = `${player1name.value}'s Turn`
-    for (var i = 0; i < 5; i++){
-      miniCard[i].innerHTML = '';
-    }
+  var currentPlayer = (numOfRounds == 1) ? player1name : player2name;
+  currentPlayerName.innerText = `${currentPlayer.value}'s Turn`;
+  for (var i = 0; i < 5; i++){
+    miniCard[i].innerHTML = '';
+  }
+  matches.innerText = "0";
   turn = -1;
   cardView.innerHTML = ""; // clear cards from page
   matchesThisRound = 0;
   deck = new Deck(); // reset the deck
   createCards();
   addCardsToHTML();
-  startTimer();
-  addPlayers();
-  document.querySelector(".game-page").classList.remove("hidden");
-  document.querySelector(".two-player-page").classList.add('hidden');
-  document.querySelector(".congratulations-page").classList.add("hidden");
-}
 
-function playerTwoGame() {
-  numOfRounds++;
-  var currentPlayerName = document.querySelector('.current-player-name');
-  currentPlayerName.innerText = `${player2name.value}'s Turn`
-    for (var i = 0; i < 5; i++){
-      miniCard[i].innerHTML = '';
-    }
-  turn = -1;
-  cardView.innerHTML = ""; // clear cards from page
-  matchesThisRound = 0;
-  deck = new Deck(); // reset the deck
-  createCards();
-  addCardsToHTML();
-  startSecondTimer();
+  if (numOfRounds == 1) startTimer();
+  else startSecondTimer();
+
+  if (numOfRounds == 1) addPlayers();
   document.querySelector(".game-page").classList.remove("hidden");
   document.querySelector(".two-player-page").classList.add('hidden');
   document.querySelector(".congratulations-page").classList.add("hidden");
@@ -146,18 +131,14 @@ function finishGame() {
   document.querySelector(".game-page").classList.add("hidden");
   if (player1Time < player2Time) {
     document.querySelector('.congrats').innerText = `Congratulations, ${player1name.value}`
-      document.querySelector(".timer").innerText = formatTime(player1Time);
+    document.querySelector(".timer").innerText = formatTime(player1Time);
   } else {
     document.querySelector('.congrats').innerText = `Congratulations, ${player2name.value}`;
     document.querySelector(".timer").innerText = formatTime(player2Time);
   }
   document.querySelector(".congratulations-page").classList.remove("hidden");
-  highscore.push(`${player1Time} - ${player1name}`);
-  highscore.push(`${player2Time} - ${player2name}`);
-  var stringifiedArray = JSON.stringify(highscore);
-  localStorage.setItem('highScoreArray', stringifiedArray)
-  console.log(highscore)
-  // displayHighScore();
+  updateHighscores();
+  displayHighscores();
   numOfRounds = 0;
   clearInterval(gameTimer);
   console.log("the game is finished");
@@ -183,7 +164,6 @@ function finishGame() {
 function retrieveHighScores() {
   var parsedArray = JSON.parse(localStorage.getItem('highScoreArray'));
   highscore = parsedArray;
-  displayHighScore();
 }
 
 // takes in a number of seconds and return a string formatted with the minutes and seconds
@@ -199,6 +179,64 @@ function formatTime(seconds) {
 
 function refreshPage() {
   location.reload();
+}
+
+function retrievePlayers() {
+  var allPlayersAsAString;
+  allPlayersAsAString = localStorage.getItem("players");
+  if (allPlayersAsAString == null) allPlayersAsAString = "[]";
+  return JSON.parse(allPlayersAsAString);
+}
+
+function updateHighscores() {
+  var allPlayers = retrievePlayers();
+
+  var player1found = false, player2found = false;
+  for (var i = 0; i < allPlayers.length; i++) {
+    if (allPlayers[i].name == player1name.value) {
+      allPlayers[i].saveWin(player1Time);
+      player1found = true;
+    }
+    if (allPlayers[i].name == player2name.value) {
+      allPlayers[i].saveWin(player2Time);
+      player2found = true;
+    }
+  }
+
+  if (!player1found) {
+    var plr = new Player(player1name.value);
+    plr.wins.push(player1Time);
+    allPlayers.push(plr);
+  }
+  if (!player2found) {
+    var plr = new Player(player2name.value);
+    plr.wins.push(player2Time);
+    allPlayers.push(plr);
+  }
+
+  localStorage.setItem("players", JSON.stringify(allPlayers));
+}
+
+function sortedPlayers() {
+  var allPlayers = retrievePlayers();
+  var scores = [];
+  for (var i = 0; i < allPlayers.length; i++) {
+    for (var t = 0; (t < allPlayers[i].wins.length && t < 3); t++) {
+      scores.push([allPlayers[i].wins[t], allPlayers[i].name]);
+    }
+  }
+  scores.sort(function(a, b) {
+    return a[0] - b[0];
+  });
+  return scores;
+}
+
+function displayHighscores() {
+  document.querySelector("#highscores").innerHTML = "";
+  var sortedTimes = sortedPlayers();
+  for (var i = 0; i < sortedTimes.length && i < 3; i++) {
+    document.querySelector("#highscores").innerHTML += `${sortedTimes[i][0]} - ${sortedTimes[i][1]}`;
+  }
 }
 
 document.addEventListener("click", function(event) {
@@ -221,10 +259,8 @@ document.addEventListener("click", function(event) {
   }
 });
 
-// window.onload = function() {
-//     this.startGame();
-//     if (localStorage.getItem('highScoreArray')) {
-//       this.retrieveHighScores();
-//     }
-//
-// };
+window.onload = function() {
+    if (localStorage.getItem('highScoreArray')) {
+      displayHighscores();
+    }
+};
